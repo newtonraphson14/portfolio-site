@@ -4,6 +4,7 @@ import { Intro } from "@/components/sections/Intro";
 import { OngoingWork } from "@/components/sections/OngoingWork";
 import { SelectedProjects } from "@/components/sections/SelectedProjects";
 import { TechnicalFocus } from "@/components/sections/TechnicalFocus";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { getHomePageData } from "@/lib/projects";
 
 export default async function Home() {
@@ -22,11 +23,21 @@ export default async function Home() {
         ongoingCount={ongoingProjects.length}
         focusCount={focusAreas.length}
       />
-      <Intro />
-      <SelectedProjects projects={featuredProjects} />
-      <OngoingWork items={ongoingProjects} />
-      <TechnicalFocus areas={focusAreas} />
-      <GitHubHighlights items={highlights} />
+      <ScrollReveal>
+        <Intro />
+      </ScrollReveal>
+      <ScrollReveal>
+        <SelectedProjects projects={featuredProjects} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <OngoingWork items={ongoingProjects} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <TechnicalFocus areas={focusAreas} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <GitHubHighlights items={highlights} />
+      </ScrollReveal>
     </>
   );
 }
