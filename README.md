@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# portfolio-site
 
-## Getting Started
+Portfolio site built as a standard Next.js application with a hybrid content model:
 
-First, run the development server:
+- Presentation layer: Next.js App Router + TypeScript + Tailwind CSS
+- Content layer: manual site identity, manual ongoing work, curated completed projects
+- Data integration layer: GitHub REST data normalized through local overrides
+
+## Architecture
+
+Completed work does not come from "show every repo". The site uses:
+
+- `data/featured-repos.ts` as the allowlist of repositories worth surfacing
+- `data/project-overrides.ts` for portfolio-quality titles, summaries, stack notes, and project narrative
+- `data/ongoing-work.ts` for work that is still in progress
+- `data/site.ts` for identity, intro copy, and technical focus blocks
+
+GitHub metadata is fetched in [`lib/github.ts`](./lib/github.ts) and normalized in [`lib/projects.ts`](./lib/projects.ts). The fetch layer is cached, tagged for revalidation, and wrapped in error handling so the site still renders if GitHub is unavailable during build.
+
+## Routes
+
+- `/` home page
+- `/projects` curated completed projects
+- `/projects/[slug]` project detail pages
+- `/api/revalidate` on-demand cache revalidation
+
+## Local Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy `.env.example` to `.env.local` if needed.
 
-## Learn More
+- `GITHUB_TOKEN`: optional personal access token to raise GitHub API rate limits
+- `GITHUB_USERNAME`: optional override for the GitHub username to fetch
+- `REVALIDATE_SECRET`: required if you want to call `POST /api/revalidate`
 
-To learn more about Next.js, take a look at the following resources:
+## Revalidation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The GitHub fetch layer uses periodic revalidation and a cache tag. To revalidate manually:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+curl -X POST http://localhost:3000/api/revalidate \
+  -H "x-revalidate-secret: your-secret"
+```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This invalidates the GitHub cache tag and refreshes the home page plus project archive routes.
