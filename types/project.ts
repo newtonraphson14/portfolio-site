@@ -34,6 +34,13 @@ export type OngoingProject = {
   slug: string;
   title: string;
   currentFocus: string;
+  problemStatement?: string;
+  tags?: string[];
+  sections?: {
+    title: string;
+    paragraphs?: string[];
+    bullets?: string[];
+  }[];
   status: "Ongoing";
 };
 
