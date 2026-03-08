@@ -11,6 +11,29 @@ type ProjectOverride = {
 };
 
 export const projectOverrides: Record<string, ProjectOverride> = {
+  "t-crb-project": {
+    title: "T CrB Photometry and Raw-Image Pipeline",
+    summary:
+      "A reproducible research pipeline for T Coronae Borealis that combines AAVSO cleaning, binning and smoothing products, ASAS-SN overlap validation, and a growing raw-image lane spanning PS1, Legacy Survey, and DASCH.",
+    category: "Astrophysics",
+    stack: [
+      "Python",
+      "Pandas",
+      "NumPy",
+      "Matplotlib",
+      "Jupyter",
+      "Astronomy Archives",
+    ],
+    featured: true,
+    narrative: {
+      challenge:
+        "Recurrent nova work often fragments across notebooks, raw CSVs, and archive checks, which makes it hard to keep the photometry pipeline, validation artifacts, and image-lane experiments aligned.",
+      build:
+        "This repository organizes T CrB analysis into a reproducible pipeline with modern-V and cross-cycle-Vis lanes, notebook wrappers, QC exports, overlap checks against ASAS-SN, and a raw-image workflow that now includes live DASCH ingestion plus staged PS1 and Legacy assets.",
+      outcome:
+        "The result is a portfolio-quality research repo that exposes final artifacts, methods, and provenance clearly enough to function as both an analysis workspace and a public technical showcase.",
+    },
+  },
   "ruwe-radial-ks-clustering": {
     title: "RUWE Radial KS Clustering",
     summary:
